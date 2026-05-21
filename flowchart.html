@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lectov: Lecture to Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0d18;
+    --bg-2:      #0f1424;
+    --surface:   #161c30;
+    --surface-2: #1c2440;
+    --line:      #2a324a;
+    --line-soft: #1f2740;
+    --text:      #e6e9f2;
+    --text-dim:  #8892b0;
+    --text-mute: #5a6379;
+
+    --accent-input:   #38bdf8;
+    --accent-process: #94a3b8;
+    --accent-ai:      #a78bfa;
+    --accent-decide:  #fbbf24;
+    --accent-repair:  #f87171;
+    --accent-success: #34d399;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', system-ui, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    min-height: 100vh;
+  }
+
+  body {
+    background:
+      radial-gradient(1200px 600px at 10% -10%, rgba(167, 139, 250, 0.08), transparent 60%),
+      radial-gradient(900px 500px at 90% 110%, rgba(56, 189, 248, 0.07), transparent 60%),
+      var(--bg);
+    background-attachment: fixed;
+  }
+
+  main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 56px 32px 80px;
+  }
+
+  /* ----- header ----- */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 28px;
+    margin-bottom: 32px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    margin: 0 0 12px;
+  }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--text);
+  }
+
+  h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent-ai);
+  }
+
+  .subtitle {
+    margin: 14px 0 0;
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 540px;
+    line-height: 1.5;
+  }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    text-align: right;
+    line-height: 1.7;
+    flex-shrink: 0;
+  }
+  .meta span { color: var(--text-dim); }
+
+  /* ----- legend ----- */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px 26px;
+    margin: 0 0 36px;
+    font-size: 12px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: 8px; }
+  .swatch {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    box-shadow: 0 0 12px currentColor;
+  }
+
+  /* ----- chart container ----- */
+  .chart {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  svg.flow {
+    width: 100%;
+    height: auto;
+    display: block;
+    min-width: 760px;
+  }
+
+  /* ----- footer note ----- */
+  footer {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line-soft);
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-mute);
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <p class="eyebrow">Pipeline / v2.0</p>
+        <h1>Lectov: Lecture to video <em>Pipeline</em></h1>
+        <p class="subtitle">Built by Krishna Ramasimha</p>
+      </div>
+      <div class="meta">
+        <span>// renderer</span> manim<br>
+        <span>// model</span> gpt-5.4<br>
+        <span>// output</span> .mp4
+      </div>
+    </header>
+
+    <div class="legend">
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-input);  color:var(--accent-input)"></span>Input</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-process);color:var(--accent-process)"></span>Process</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-ai);     color:var(--accent-ai)"></span>GPT 5.4</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-decide); color:var(--accent-decide)"></span>Decision</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-repair); color:var(--accent-repair)"></span>Repair loop</span>
+      <span class="legend-item"><span class="swatch" style="background:var(--accent-success);color:var(--accent-success)"></span>Output</span>
+    </div>
+
+    <div class="chart">
+      <svg class="flow" viewBox="0 0 980 1240" xmlns="http://www.w3.org/2000/svg" aria-label="Manim generation pipeline flowchart">
+        <defs>
+          <!-- arrow markers -->
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#4a5476"/>
+          </marker>
+          <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"/>
+          </marker>
+          <marker id="arr-red" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#f87171"/>
+          </marker>
+
+          <!-- subtle drop shadow -->
+          <filter id="shadow" x="-20%" y="-30%" width="140%" height="160%">
+            <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#000" flood-opacity="0.45"/>
+          </filter>
+
+          <!-- card gradient -->
+          <linearGradient id="g-card" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#1c2440"/>
+            <stop offset="100%" stop-color="#141a2e"/>
+          </linearGradient>
+          <linearGradient id="g-card-ai" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#231a3d"/>
+            <stop offset="100%" stop-color="#181228"/>
+          </linearGradient>
+          <linearGradient id="g-card-decide" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#2a2316"/>
+            <stop offset="100%" stop-color="#1a160e"/>
+          </linearGradient>
+          <linearGradient id="g-card-repair" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#2a1717"/>
+            <stop offset="100%" stop-color="#1a0e0e"/>
+          </linearGradient>
+          <linearGradient id="g-card-success" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"  stop-color="#152c25"/>
+            <stop offset="100%" stop-color="#0d1c18"/>
+          </linearGradient>
+
+          <!-- node template via symbol -->
+        </defs>
+
+        <!-- background grid (subtle) -->
+        <g opacity="0.4">
+          <line x1="0" y1="0" x2="0" y2="1240" stroke="var(--line-soft)" stroke-width="0"/>
+        </g>
+
+        <!-- ============== MAIN FLOW ============== -->
+
+        <!-- 01 Input -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="40" width="400" height="72" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="40" width="4" height="72" rx="2" fill="#38bdf8"/>
+          <text x="312" y="68" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">01 · INPUT</text>
+          <text x="312" y="94" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Upload Lecture Notes / PDF</text>
+        </g>
+
+        <!-- arrow 01 → 02 -->
+        <line x1="490" y1="116" x2="490" y2="148" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 02 Extract -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="152" width="400" height="72" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="152" width="4" height="72" rx="2" fill="#94a3b8"/>
+          <text x="312" y="180" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">02 · PROCESS</text>
+          <text x="312" y="206" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Extract Text from File</text>
+        </g>
+
+        <!-- arrow 02 → 03 -->
+        <line x1="490" y1="228" x2="490" y2="260" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 03 GPT generates  (loop target #1) -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="264" width="400" height="72" rx="14" fill="url(#g-card-ai)" stroke="#3a2e5a" stroke-width="1"/>
+          <rect x="290" y="264" width="4" height="72" rx="2" fill="#a78bfa"/>
+          <text x="312" y="292" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#7a6ba0">03 · GPT 5.4</text>
+          <text x="312" y="318" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Generate Manim Python Code</text>
+        </g>
+
+        <!-- arrow 03 → 04 -->
+        <line x1="490" y1="340" x2="490" y2="372" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 04 Save Scene -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="376" width="400" height="72" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="376" width="4" height="72" rx="2" fill="#94a3b8"/>
+          <text x="312" y="404" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">04 · PROCESS</text>
+          <text x="312" y="430" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Save Generated Scene File</text>
+        </g>
+
+        <!-- arrow 04 → 05 -->
+        <line x1="490" y1="452" x2="490" y2="484" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 05 Syntax check -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="488" width="400" height="72" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="488" width="4" height="72" rx="2" fill="#94a3b8"/>
+          <text x="312" y="516" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">05 · VALIDATE</text>
+          <text x="312" y="542" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Run Python Syntax Check</text>
+        </g>
+
+        <!-- arrow 05 → DECISION 1 -->
+        <line x1="490" y1="564" x2="490" y2="596" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- DECISION 1: Syntax Errors? -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="600" width="400" height="72" rx="14" fill="url(#g-card-decide)" stroke="#5a4416" stroke-width="1"/>
+          <rect x="290" y="600" width="4" height="72" rx="2" fill="#fbbf24"/>
+          <!-- question icon -->
+          <circle cx="320" cy="636" r="14" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="320" y="641" font-family="Fraunces" font-style="italic" font-size="16" font-weight="500" fill="#fbbf24" text-anchor="middle">?</text>
+          <text x="346" y="628" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#a08658">DECISION</text>
+          <text x="346" y="654" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Syntax errors?</text>
+        </g>
+
+        <!-- YES label and arrow going right from DECISION 1 -->
+        <text x="708" y="630" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#fbbf24">YES</text>
+        <line x1="690" y1="636" x2="744" y2="636" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr-amber)" stroke-dasharray="0"/>
+
+        <!-- NO label and arrow going down from DECISION 1 -->
+        <text x="502" y="694" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#34d399">NO</text>
+        <line x1="490" y1="676" x2="490" y2="720" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- BRANCH 1: GPT 5.4 fixes syntax  (right side, aligned with DECISION 1) -->
+        <g filter="url(#shadow)">
+          <rect x="748" y="600" width="220" height="72" rx="14" fill="url(#g-card-repair)" stroke="#5a2828" stroke-width="1"/>
+          <rect x="748" y="600" width="4" height="72" rx="2" fill="#f87171"/>
+          <text x="766" y="628" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#a06a6a">REPAIR · GPT 5.4</text>
+          <text x="766" y="650" font-family="Manrope" font-size="13" font-weight="600" fill="#e6e9f2">Send error + code</text>
+          <text x="766" y="666" font-family="Manrope" font-size="13" font-weight="600" fill="#e6e9f2">back to GPT 5.4</text>
+        </g>
+
+        <!-- Loop-back path from BRANCH 1 to BOX 03 -->
+        <!-- starts at right edge of branch, goes right then up then left into box 03 right edge -->
+        <path d="M 968 636
+                 C 988 636, 988 300, 968 300
+                 L 690 300"
+              fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr-red)"/>
+        <text x="900" y="295" font-family="JetBrains Mono" font-size="9" letter-spacing="2" fill="#a06a6a">REGENERATE ↻</text>
+
+        <!-- 06 Validation render  (loop target #2) -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="724" width="400" height="72" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="724" width="4" height="72" rx="2" fill="#94a3b8"/>
+          <text x="312" y="752" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">06 · VALIDATE</text>
+          <text x="312" y="778" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Run Manim Validation Render</text>
+        </g>
+
+        <!-- arrow 06 → DECISION 2 -->
+        <line x1="490" y1="800" x2="490" y2="832" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- DECISION 2: Render Errors? -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="836" width="400" height="72" rx="14" fill="url(#g-card-decide)" stroke="#5a4416" stroke-width="1"/>
+          <rect x="290" y="836" width="4" height="72" rx="2" fill="#fbbf24"/>
+          <circle cx="320" cy="872" r="14" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+          <text x="320" y="877" font-family="Fraunces" font-style="italic" font-size="16" font-weight="500" fill="#fbbf24" text-anchor="middle">?</text>
+          <text x="346" y="864" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#a08658">DECISION</text>
+          <text x="346" y="890" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Render errors?</text>
+        </g>
+
+        <!-- YES label and arrow from DECISION 2 -->
+        <text x="708" y="866" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#fbbf24">YES</text>
+        <line x1="690" y1="872" x2="744" y2="872" stroke="#fbbf24" stroke-width="2" marker-end="url(#arr-amber)"/>
+
+        <!-- NO label and arrow going down from DECISION 2 -->
+        <text x="502" y="930" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#34d399">NO</text>
+        <line x1="490" y1="912" x2="490" y2="956" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- BRANCH 2: GPT 5.4 fixes render  (right side, aligned with DECISION 2) -->
+        <g filter="url(#shadow)">
+          <rect x="748" y="836" width="220" height="72" rx="14" fill="url(#g-card-repair)" stroke="#5a2828" stroke-width="1"/>
+          <rect x="748" y="836" width="4" height="72" rx="2" fill="#f87171"/>
+          <text x="766" y="864" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#a06a6a">REPAIR · GPT 5.4</text>
+          <text x="766" y="886" font-family="Manrope" font-size="13" font-weight="600" fill="#e6e9f2">Repair rendering</text>
+          <text x="766" y="902" font-family="Manrope" font-size="13" font-weight="600" fill="#e6e9f2">issues</text>
+        </g>
+
+        <!-- Loop-back path from BRANCH 2 to BOX 06 -->
+        <path d="M 968 872
+                 C 988 872, 988 760, 968 760
+                 L 690 760"
+              fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#arr-red)"/>
+        <text x="900" y="755" font-family="JetBrains Mono" font-size="9" letter-spacing="2" fill="#a06a6a">RETRY ↻</text>
+
+        <!-- 07 Final render -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="960" width="400" height="92" rx="14" fill="url(#g-card)" stroke="#2a324a" stroke-width="1"/>
+          <rect x="290" y="960" width="4" height="92" rx="2" fill="#94a3b8"/>
+          <text x="312" y="988" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#5a6379">07 · RENDER</text>
+          <text x="312" y="1014" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Final Manim Render</text>
+          <rect x="312" y="1024" width="142" height="20" rx="4" fill="#0a0d18" stroke="#2a324a" stroke-width="1"/>
+          <text x="320" y="1038" font-family="JetBrains Mono" font-size="11" fill="#a78bfa">$ manim -pql file.py</text>
+        </g>
+
+        <!-- arrow 07 → 08 -->
+        <line x1="490" y1="1056" x2="490" y2="1088" stroke="#4a5476" stroke-width="2" marker-end="url(#arr)"/>
+
+        <!-- 08 Success -->
+        <g filter="url(#shadow)">
+          <rect x="290" y="1092" width="400" height="80" rx="14" fill="url(#g-card-success)" stroke="#1e5a40" stroke-width="1"/>
+          <rect x="290" y="1092" width="4" height="80" rx="2" fill="#34d399"/>
+          <!-- check icon -->
+          <circle cx="320" cy="1132" r="14" fill="none" stroke="#34d399" stroke-width="1.5"/>
+          <path d="M 313 1132 L 318 1137 L 327 1127" fill="none" stroke="#34d399" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="346" y="1124" font-family="JetBrains Mono" font-size="10" letter-spacing="2" fill="#4a8a72">08 · OUTPUT</text>
+          <text x="346" y="1150" font-family="Manrope" font-size="17" font-weight="600" fill="#e6e9f2">Return MP4 Video</text>
+        </g>
+      </svg>
+    </div>
+
+    <footer>
+      <span>manim-pipeline.flow</span>
+      <span>auto-repair × 2 loops</span>
+    </footer>
+  </main>
+</body>
+</html>
