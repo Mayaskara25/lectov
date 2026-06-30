@@ -1,0 +1,119 @@
+======================================================================
+CBSE CLASS 10 MATHEMATICS: TRIGONOMETRY STUDY GUIDE & FORMULAS
+======================================================================
+
+1. THE BASIC CONCEPT: WHAT IS TRIGONOMETRY?
+-------------------------------------------
+Trigonometry is the study of relationships between the sides and angles
+of a triangle. The word comes from Greek: 'trigon' (triangle) and
+'metron' (measure).
+
+In Class 10, we restrict our study strictly to RIGHT-ANGLED TRIANGLES.
+Imagine a triangle ABC, where Angle B = 90 degrees. We choose one of
+the acute angles, say Angle A, and call it 'theta' (written as a zero
+with a horizontal line).
+
+How we define the three sides depends entirely on where 'theta' is:
+* HYPOTENUSE (H): The longest side. It is always opposite the 90° angle.
+* PERPENDICULAR (P): The side directly opposite to our chosen angle theta.
+* BASE (B): The side next to (adjacent to) angle theta, which forms the
+  floor of the angle along with the hypotenuse.
+
+CRITICAL TIP: If you switch your attention to Angle C, the Perpendicular
+and Base swap places! The side opposite to the angle is ALWAYS the
+Perpendicular.
+
+
+2. THE SIX TRIGONOMETRIC RATIOS (WHY DO THEY EXIST?)
+----------------------------------------------------
+A ratio is just one side divided by another side. Since a triangle has
+3 sides, there are exactly 6 different ways to divide them. We give
+each fraction a specific name:
+
+* sin(theta)   = Perpendicular / Hypotenuse       [P/H]
+* cos(theta)   = Base / Hypotenuse                [B/H]
+* tan(theta)   = Perpendicular / Base             [P/B]
+* cosec(theta) = Hypotenuse / Perpendicular     [H/P]
+* sec(theta)   = Hypotenuse / Base                [H/B]
+* cot(theta)   = Base / Perpendicular             [B/P]
+
+MEMORY TRICK FOR THE ORDER:
+"Pandit Badri Prasad Har Har Bole"
+  P/H (sin)  |  B/H (cos)  |  P/B (tan)
+  ------------------------------------
+  H/P (cosec)|  H/B (sec)  |  B/P (cot)
+
+REAL-WORLD MEANING:
+If sin(30°) = 1/2, it means that for any right triangle with a 30-degree
+angle, the opposite wall (Perpendicular) will always be exactly half the
+length of the sloped ramp (Hypotenuse), no matter how big or small the
+triangle is!
+
+
+3. RECIPROCAL RELATIONSHIPS (HOW THEY CONNECT)
+----------------------------------------------
+Look closely at the formulas above. You will notice that some are just
+flipped versions of others. These are called reciprocal identities:
+
+* cosec(theta) is the exact upside-down version of sin(theta).
+  Formula: cosec(theta) = 1 / sin(theta)
+
+* sec(theta) is the exact upside-down version of cos(theta).
+  Formula: sec(theta) = 1 / cos(theta)
+
+* cot(theta) is the exact upside-down version of tan(theta).
+  Formula: cot(theta) = 1 / tan(theta)
+
+* Division connection: If you divide sin by cos, the 'H' cancels out
+  and leaves you with P/B, which is tan!
+  Formula: tan(theta) = sin(theta) / cos(theta)
+  Formula: cot(theta) = cos(theta) / sin(theta)
+
+
+4. THE THREE CHIEF TRIGONOMETRIC IDENTITIES
+-------------------------------------------
+An identity is an equation that holds true for any value of theta you
+plug into it. They are derived directly using Pythagoras Theorem
+(P^2 + B^2 = H^2).
+
+Identity 1: sin^2(theta) + cos^2(theta) = 1
+* Meaning: Square the sin value, square the cos value, add them, and
+  the answer is ALWAYS 1.
+* Useful Variations: sin^2 = 1 - cos^2   OR   cos^2 = 1 - sin^2
+
+Identity 2: 1 + tan^2(theta) = sec^2(theta)
+* Useful Variations: sec^2 - tan^2 = 1   OR   tan^2 = sec^2 - 1
+
+Identity 3: 1 + cot^2(theta) = cosec^2(theta)
+* Useful Variations: cosec^2 - cot^2 = 1   OR   cot^2 = cosec^2 - 1
+
+
+5. THE SPECIFIC ANGLES TABLE (EXPLANATION)
+------------------------------------------
+In your board exams, you will solve problems using standard geometric
+angles (0°, 30°, 45°, 60°, 90°). You must memorize these values.
+
+Angle (deg) | 0°    | 30°      | 45°      | 60°      | 90°
+------------|-------|----------|----------|----------|-----
+sin(theta)  | 0     | 1/2      | 1/sqrt(2)| sqrt(3)/2| 1
+cos(theta)  | 1     | sqrt(3)/2| 1/sqrt(2)| 1/2      | 0
+tan(theta)  | 0     | 1/sqrt(3)| 1        | sqrt(3)  | Not Defined
+cosec(theta)| N.D.  | 2        | sqrt(2)  | 2/sqrt(3)| 1
+sec(theta)  | 1     | 2/sqrt(3)| sqrt(2)  | 2        | Not Defined
+cot(theta)  | N.D.  | sqrt(3)  | 1        | 1/sqrt(3)| 0
+
+UNDERSTANDING "NOT DEFINED" (N.D.):
+At 90°, the Base of the triangle shrinks down to 0. Since you cannot
+divide any number by zero in mathematics, ratios like tan(90°) [P/B]
+and sec(90°) [H/B] become mathematically impossible to calculate. We
+call this "Not Defined".
+
+HOW TO RECONSTRUCT THIS TABLE IN 1 MINUTE IN THE EXAM HALL:
+1. Write down numbers 0, 1, 2, 3, 4 for the columns 0° to 90°.
+2. Divide all of them by 4: (0/4, 1/4, 2/4, 3/4, 4/4) -> (0, 1/4, 1/2, 3/4, 1).
+3. Take the square root of each: (0, 1/2, 1/sqrt(2), sqrt(3)/2, 1).
+4. THIS IS YOUR SIN ROW!
+5. Reverse the sin row from right to left to get your COS ROW.
+6. Divide Sin by Cos to get your TAN ROW.
+
+======================================================================
