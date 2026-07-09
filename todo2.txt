@@ -1,0 +1,33 @@
+PROMPT OPTIMIZATION CHANGES FOR tasks.py
+=========================================
+
+1. SYSTEM_PROMPT (Lines 72-120) - CONDENSE PROMPT
+   - Replace lines 89-111 (Layout/Timing rules) with concise bullet points
+   - Current: 32 lines of verbose rules
+   - New: ~15 lines with essential bullet-point guidance
+   - Save ~150 tokens per call
+
+2. REPAIR_PROMPT - SPLIT INTO TWO SPECIALIZED PROMPTS
+   - Replace REPAIR_PROMPT (lines 122-139) with:
+     a) REPAIR_SYNTAX_PROMPT - for syntax errors only
+     b) REPAIR_RENDER_PROMPT - for render errors only
+   - Each ~20 lines vs current 18 lines but more targeted
+   - Save ~50 tokens per repair call due to specificity
+
+3. COMPACT JSON IN USER MESSAGE (Line 252)
+   - Change: json.dumps(plan, indent=2)
+   - To: json.dumps(plan, separators=(',', ':'))
+   - Save 20-30% fewer tokens depending on plan size
+
+4. ADD MAX_TOKENS LIMIT (Lines 185-191)
+   - Add max_tokens=2000 parameter to completion() call
+   - Prevents runaway responses, controls costs
+
+5. UPDATE generate_code() TO USE COMPACT JSON
+   - Line 252: user_msg = _WRITER_PREAMBLE + json.dumps(plan, separators=(',', ':'))
+
+6. UPDATE repair_code() TO SELECT APPROPRIATE PROMPT
+   - Add parameter: error_type: str = "syntax"
+   - Select REPAIR_SYNTAX_PROMPT or REPAIR_RENDER_PROMPT based on error_type
+
+ESTIMATED TOTAL SAVINGS: 30-50% reduction in LLM token usage per pipeline run
